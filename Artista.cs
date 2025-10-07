@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Text;
 
 public class Artista
@@ -28,14 +27,17 @@ public class Artista
         Premios = premios;
     }
 
-    public override string ToString() => $"Nome: {Nome}\n Gênero: {Genero}\n Profissão: {Profissao}\n Nacionalidade: {Nacionalidade}\n Idade: {Idade}\n É Falecido? {Falecido}\n Altura: {Altura}\n Etnia: {Etnia}\n Prêmios: {PremiosToString(Premios)}";
+    public override string ToString() => $"Nome: {Nome}\nGênero: {Genero}\nProfissão: {Profissao}\nNacionalidade: {Nacionalidade}\nIdade: {Idade}\nÉ Falecido? {Falecido}\nAltura: {Altura}\nEtnia: {Etnia}\nPrêmios: {PremiosToString(Premios)}";
 
     public string PremiosToString(List<string> premios)
     {
         var builder = new StringBuilder();
         foreach (var prem in premios)
         {
-            builder.Append($"{prem}, ");
+            if (prem != premios[^1])
+                builder.Append($"{prem}, ");
+            else
+                builder.Append($"{prem}");
         }
         return builder.ToString();
     }
