@@ -1,10 +1,13 @@
-﻿using System.Text.Json;
+﻿using System.Net.WebSockets;
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 public class Program
 {
     private static void Main(string[] args)
     {
         const string jsonPath = "/home/gfaraco/termo/test.json";
+        var options = new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
         // var teste = new Artista(
         //     "Brad Pitt",
         //     "homem",
@@ -17,12 +20,12 @@ public class Program
         //     "branco",
         //     ["Globo de Ouro", "BAFTA"]
         //     );
-        var artista = GetArtista();
-        AdicionarArtistaAoJSON(jsonPath, artista);
+        // var artista = GetArtista();
+        // AdicionarArtistaAoJSON(jsonPath, artista, options);
+        RemoverArtistaDoJSON(jsonPath, "Joãozinho", options);
     }
-    public static void AdicionarArtistaAoJSON(string path, Artista artist)
+    public static void AdicionarArtistaAoJSON(string path, Artista artist, JsonSerializerOptions options)
     {
-        var options = new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
         JsonArray jsonArray;
 
         if (File.Exists(path) && new FileInfo(path).Length > 0)
@@ -37,6 +40,27 @@ public class Program
         jsonArray.Add(artistaNode);
 
         File.WriteAllText(path, jsonArray.ToJsonString(options));
+    }
+    public static void RemoverArtistaDoJSON(string path, string nome, JsonSerializerOptions options)
+    {
+        JsonArray jsonArray;
+        if (File.Exists(path) && new FileInfo(path).Length > 0)
+        {
+            var jsonAtual = File.ReadAllText(path);
+            jsonArray = JsonNode.Parse(jsonAtual) as JsonArray ?? [];
+            for (int i = jsonArray.Count - 1; i >= 0; i--)
+            {
+                if (jsonArray[i] is JsonObject artista && artista["nome"]?.GetValue<string>() == nome)
+                {
+                    jsonArray.RemoveAt(i);
+                }
+            }
+            if (jsonArray.Count - 1 == jsonAtual.Length)
+                Console.WriteLine("Nenhum artista com este nome.");
+
+            string jsonAtualizado = jsonArray.ToJsonString(options);
+            File.WriteAllText(path, jsonAtualizado);
+        }
     }
     public static Artista GetArtista()
     {
@@ -83,6 +107,6 @@ public class Program
             premios.Add(input);
         }
     
-    return premios;
+        return premios;
     }
 }
