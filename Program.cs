@@ -1,5 +1,4 @@
-﻿using System.Net.WebSockets;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 public class Program
@@ -55,8 +54,6 @@ public class Program
                     jsonArray.RemoveAt(i);
                 }
             }
-            if (jsonArray.Count - 1 == jsonAtual.Length)
-                Console.WriteLine("Nenhum artista com este nome.");
 
             string jsonAtualizado = jsonArray.ToJsonString(options);
             File.WriteAllText(path, jsonAtualizado);
