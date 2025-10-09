@@ -5,26 +5,26 @@ public class Program
     private static void Main(string[] args)
     {
         const string jsonPath = "/home/gfaraco/termo/test.json";
-        var teste = new Artista(
-            "Brad Pitt",
-            "homem",
-            "ator",
-            "estadunidense",
-            55,
-            false,
-            1.70f,
-            "",
-            "branco",
-            ["Globo de Ouro", "BAFTA"]
-            );
-        Console.WriteLine(Path.GetFullPath(jsonPath));
-        AdicionarArtistaAoJSON(jsonPath, teste);
+        // var teste = new Artista(
+        //     "Brad Pitt",
+        //     "homem",
+        //     "ator",
+        //     "estadunidense",
+        //     55,
+        //     false,
+        //     1.70f,
+        //     "",
+        //     "branco",
+        //     ["Globo de Ouro", "BAFTA"]
+        //     );
+        var artista = GetArtista();
+        AdicionarArtistaAoJSON(jsonPath, artista);
     }
     public static void AdicionarArtistaAoJSON(string path, Artista artist)
     {
         var options = new JsonSerializerOptions { WriteIndented = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
         JsonArray jsonArray;
-    
+
         if (File.Exists(path) && new FileInfo(path).Length > 0)
         {
             var jsonAtual = File.ReadAllText(path);
@@ -32,9 +32,57 @@ public class Program
         }
         else
             jsonArray = [];
+
         var artistaNode = JsonSerializer.SerializeToNode(artist, options);
         jsonArray.Add(artistaNode);
-        
+
         File.WriteAllText(path, jsonArray.ToJsonString(options));
+    }
+    public static Artista GetArtista()
+    {
+        string nome, genero, profissao, nacionalidade, foto, etnia;
+        int idade = 0;
+        float altura = 0;
+        bool falecido = false;
+        List<string> premios = [];
+
+        Console.Write("Digite o nome: ");
+        nome = Console.ReadLine();
+        Console.Write("Digite o genero: ");
+        genero = Console.ReadLine();
+        Console.Write("Digite a profissão: ");
+        profissao = Console.ReadLine();
+        Console.Write("Digite a nacionalidade: ");
+        nacionalidade = Console.ReadLine();
+        Console.Write("Digite o link para a foto: ");
+        foto = Console.ReadLine();
+        Console.Write("Digite a etnia: ");
+        etnia = Console.ReadLine();
+        Console.Write("Qual a idade? ");
+        idade = int.Parse(Console.ReadLine());
+        Console.Write("Qual a altura? ");
+        altura = float.Parse(Console.ReadLine());
+        Console.Write("O artista já faleceu? ");
+        falecido = bool.Parse(Console.ReadLine());
+        Console.Write("Digite as premiações do artista: ");
+        premios = GetPremios().ToList();
+
+        return new Artista(nome, genero, profissao, nacionalidade, idade, falecido, altura, foto, etnia, premios);
+    }
+    public static IEnumerable<string> GetPremios()
+    {
+        var premios = new List<string>();
+        while (true)
+        {
+            Console.Write("Digite um prêmio (ou Enter para finalizar): ");
+            string input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+                break;
+                
+            premios.Add(input);
+        }
+    
+    return premios;
     }
 }
