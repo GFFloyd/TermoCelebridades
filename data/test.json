@@ -69,5 +69,20 @@
       "Globo de Ouro",
       "Palma de Ouro"
     ]
+  },
+  {
+    "nome": "John Doe",
+    "genero": "Masculino",
+    "profissao": "Ator",
+    "nacionalidade": "estadunidense",
+    "idade": 40,
+    "falecido": false,
+    "altura": 1.7,
+    "foto": "",
+    "etnia": "branco",
+    "premios": [
+      "Oscar",
+      "BAFTA"
+    ]
   }
 ]
