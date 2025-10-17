@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 public class Program
 {
     private static void Main(string[] args)
@@ -62,9 +61,9 @@ public class Program
     public static Artista GetArtista()
     {
         string nome, genero, profissao, nacionalidade, foto, etnia;
-        int idade = 0;
-        float altura = 0;
-        bool falecido = false;
+        int idade;
+        float altura;
+        bool falecido;
         List<string> premios = [];
 
         Console.Write("Digite o nome: ");
